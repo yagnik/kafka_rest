@@ -1,0 +1,1 @@
+require 'kafka_rest'
