@@ -1,6 +1,6 @@
-# Kafka::Rest
+# KafkaRest [![Build Status](https://travis-ci.org/yagnik/kafka-rest.svg?branch=master)](https://travis-ci.org/yagnik/kafka-rest)
 
-TODO: Write a gem description
+Ruby client for Confluent Inc.'s Kafka rest proxy.
 
 ## Installation
 

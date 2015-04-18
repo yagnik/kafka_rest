@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'kafka/rest/version'
+require 'kafka_rest/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "kafka-rest"
-  spec.version       = Kafka::Rest::VERSION
+  spec.version       = KafkaRest::VERSION
   spec.authors       = ["Yagnik"]
   spec.email         = ["yagnik.khanna@shopify.com"]
-  spec.summary       = %q{Ruby gem to access kafka-rest by Confluent}
-  spec.description   = %q{Ruby gem to access kafka-rest by Confluent}
-  spec.homepage      = ""
+  spec.summary       = %q{Ruby gem to access kafka-rest by Confluent Inc}
+  spec.description   = %q{Ruby gem to access kafka-rest by Confluent Inc}
+  spec.homepage      = "http://confluent.io/docs/current/kafka-rest/docs/index.html"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,4 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "minitest", "~> 5.0"
 end

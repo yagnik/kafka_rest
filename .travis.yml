@@ -1,0 +1,24 @@
+language: ruby
+sudo: false
+
+rvm:
+- "2.0"
+- "2.1"
+- "2.2"
+
+env:
+  global:
+    KAFKA_REST_URL: "http://localhost:8082"
+
+before_script:
+- make confluent/start
+
+after_script:
+- make confluent/stop
+
+before_cache:
+- rm -rf confluent/logs
+
+cache:
+  directories:
+  - confluent
