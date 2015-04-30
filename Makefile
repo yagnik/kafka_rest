@@ -12,7 +12,7 @@ confluent/confluent.tgz:
 	mkdir -p confluent && wget http://packages.confluent.io/archive/1.0/confluent-1.0-2.10.4.tar.gz -O confluent/confluent.tgz
 
 confluent/EXTRACTED: confluent/confluent.tgz
-	tar xzf confluent/confluent.tgz -C confluent --strip-components 1 && touch confluent/EXTRACTED
+	tar xzf confluent/confluent.tgz -C confluent --strip-components 1 && mkdir confluent/logs && touch confluent/EXTRACTED
 
 # Zookeeper tasks
 
