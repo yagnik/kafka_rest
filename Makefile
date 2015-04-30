@@ -55,3 +55,4 @@ test/create_kafka_topics: confluent/kafka/start
 	confluent/bin/kafka-topics --zookeeper localhost:2181 --create --topic test.1  --partitions 1  --replication-factor 1
 	confluent/bin/kafka-topics --zookeeper localhost:2181 --create --topic test.4  --partitions 4  --replication-factor 1
 	confluent/bin/kafka-topics --zookeeper localhost:2181 --create --topic test.64 --partitions 64 --replication-factor 1
+	sleep 5
