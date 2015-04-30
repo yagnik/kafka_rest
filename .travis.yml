@@ -12,6 +12,7 @@ env:
 
 before_script:
 - make confluent/start
+- make test/create_kafka_topics
 
 after_script:
 - make confluent/stop
