@@ -2,25 +2,12 @@
 
 Ruby client for Confluent Inc.'s Kafka rest proxy.
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'kafka_rest'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install kafka_rest
-
 ## Usage
 
-TODO: Write usage instructions here
+### Installation
+
+Add `gem 'kafka_rest'` line to your application's `Gemfile`, and run `bundle install`.
+
 
 ## Contributing
 
