@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'kafka_rest/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "kafka-rest"
+  spec.name          = "kafka_rest"
   spec.version       = KafkaRest::VERSION
   spec.authors       = ["Yagnik"]
   spec.email         = ["yagnik.khanna@shopify.com"]
