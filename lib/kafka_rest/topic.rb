@@ -4,7 +4,7 @@ module KafkaRest
 
     attr_reader :client, :name
 
-    def self.all(client:)
+    def self.all(client)
       client.request(:get, '/topics').collect do |topic|
         self.new(name: topic, client: client)
       end
@@ -25,7 +25,8 @@ module KafkaRest
     end
 
     private
-    def build(opts={})
+
+    def build(opts = {})
       @client = opts[:client]
       @name = opts[:name]
       @configs = opts[:configs]
