@@ -45,7 +45,7 @@ module KafkaRest
     end
 
     def request(method, path, body: nil, content_type: nil)
-      Net::HTTP.start(endpoint.host, endpoint.port, use_ssl: endpoint.scheme == 'https') do |http|
+      Net::HTTP.start(endpoint.host, endpoint.port, use_ssl: endpoint.scheme == 'https'.freeze) do |http|
         request_class = case method
           when :get;    Net::HTTP::Get
           when :post;   Net::HTTP::Post
@@ -56,10 +56,10 @@ module KafkaRest
 
         request = request_class.new(path)
         request.basic_auth(username, password) if username && password
-        request['Accept'] = "application/vnd.kafka.v1+json; q=0.9, application/json; q=0.5"
+        request['Accept'.freeze] = DEFAULT_ACCEPT_HEADER
 
         if body
-          request['Content-Type'] = content_type || "application/json"
+          request['Content-Type'.freeze] = content_type || DEFAULT_CONTENT_TYPE
           request.body = JSON.dump(body)
         end
 
@@ -76,7 +76,7 @@ module KafkaRest
           raise KafkaRest::UnauthorizedRequest.new(response.code.to_i, message)
 
         else
-          response = begin
+          response_data = begin
             JSON.parse(response.body)
           rescue JSON::ParserError => e
             raise KafkaRest::InvalidResponse, "Invalid JSON in response: #{e.message}"
@@ -87,5 +87,9 @@ module KafkaRest
         end
       end
     end
+
+    DEFAULT_ACCEPT_HEADER = "application/vnd.kafka.v1+json".freeze
+    DEFAULT_CONTENT_TYPE_HEADER = "application/json".freeze
+    private_constant :DEFAULT_CONTENT_TYPE_HEADER, :DEFAULT_ACCEPT_HEADER
   end
 end
