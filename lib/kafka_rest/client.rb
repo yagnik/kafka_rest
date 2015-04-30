@@ -32,7 +32,7 @@ module KafkaRest
       @username, @password = username, password
     end
 
-    def request(method, path, body = nil)
+    def request(method, path, body: nil, content_type: nil)
       Net::HTTP.start(endpoint.host, endpoint.port, use_ssl: endpoint.scheme == 'https') do |http|
         request_class = case method
           when :get;    Net::HTTP::Get
@@ -44,11 +44,10 @@ module KafkaRest
 
         request = request_class.new(path)
         request.basic_auth(username, password) if username && password
+        request['Accept'] = "application/vnd.kafka.v1+json; q=0.9, application/json; q=0.5"
 
-        #@TODO accept and send correct format
-        # request['Accept'] = "application/vnd.schemaregistry.v1+json"
         if body
-          request['Content-Type'] = "application/json"
+          request['Content-Type'] = content_type || "application/json"
           request.body = JSON.dump(body)
         end
 
