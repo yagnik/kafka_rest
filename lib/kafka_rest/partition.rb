@@ -1,20 +1,47 @@
 module KafkaRest
-  class Topic
-    class Partition
-      include KafkaRest::Producer
+  class Partition
+    include KafkaRest::Producer
 
-      Replica = Struct.new(:broker, :leader, :in_sync)
+    Replica = Struct.new(:broker, :leader, :in_sync)
 
-      attr_reader :topic_name, :partition, :leader, :replicas
+    attr_reader :client, :topic, :id
 
-      def initialize(opts={})
-        @topic_name = opts[:topic]
-        @partition = opts[:partition]
-        @leader = opts[:leader]
-        @replicas = opts[:replicas].map do |replica|
-          Replica.new(*replica.slice(Replica.members).values)
-        end
-      end
+    def initialize(client, topic, id)
+      @client, @topic, @id = client, topic, id
+    end
+
+    def leader
+      sync unless @leader
+      @leader
+    end
+
+    def replicas
+      sync unless @replicas
+      @replicas
+    end
+
+    def path
+      "/topics/#{topic.name}/partitions/#{id}"
+    end
+
+    def sync
+      response = client.request(:get, path)
+      populate_from_json(response)
+    end
+
+    def populate_from_json(json_object)
+      @leader   = json_object['leader']
+      @replicas = json_object['replicas'].map { |r| Replica.new(r['broker'], r['leader'], r['in_sync']) }
+      self
+    end
+
+    def self.from_json(client, topic, json_object)
+      new(client, topic, json_object['partition']).populate_from_json(json_object)
+    end
+
+    def ==(other)
+      return false unless other.is_a?(KafkaRest::Partition)
+      topic == other.topic && other.id == id
     end
   end
 end

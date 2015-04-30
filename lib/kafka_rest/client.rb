@@ -32,6 +32,18 @@ module KafkaRest
       @username, @password = username, password
     end
 
+    def topic(name)
+      KafkaRest::Topic.new(self, name)
+    end
+
+    def topics
+      result = {}
+      request(:get, '/topics').each do |topic|
+        result[topic] = KafkaRest::Topic.new(self, topic)
+      end
+      result
+    end
+
     def request(method, path, body: nil, content_type: nil)
       Net::HTTP.start(endpoint.host, endpoint.port, use_ssl: endpoint.scheme == 'https') do |http|
         request_class = case method

@@ -4,14 +4,9 @@ module KafkaRest
 
     attr_reader :client, :name
 
-    def self.all(client)
-      client.request(:get, '/topics').collect do |topic|
-        self.new(name: topic, client: client)
-      end
-    end
-
-    def initialize(opts={})
-      build(opts)
+    def initialize(client, name, partitions: nil, configs: nil)
+      @client, @name = client, name
+      @partitions, @configs = partitions, configs
     end
 
     def configs
@@ -24,22 +19,27 @@ module KafkaRest
       @partitions
     end
 
-    private
-
-    def build(opts = {})
-      @client = opts[:client]
-      @name = opts[:name]
-      @configs = opts[:configs]
-      if opts.has_key?(:partitions)
-        @partitions = opts[:partitions].collect do |partition|
-          Partition.new(partition.merge(topic: @name))
-        end
-      end
+    def partition(id)
+      KafkaRest::Partition.new(client, self, id)
     end
 
+    def path
+      "/topics/#{name}"
+    end
+
+    def ==(other)
+      return false unless other.is_a?(KafkaRest::Topic)
+      client == other.client && other.name == name
+    end
+
+    private
+
     def sync
-      response = client.request(:get, "/topics/#{@name}")
-      build(response)
+      response = client.request(:get, path)
+      @configs    = response['configs']
+      @partitions = response['partitions'].map do |partition|
+        KafkaRest::Partition.from_json(client, self, partition)
+      end
     end
   end
 end
