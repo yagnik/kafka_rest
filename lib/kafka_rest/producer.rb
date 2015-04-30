@@ -1,17 +1,38 @@
 module KafkaRest
   module Producer
-    def produce(type, event)
-      case type
-      when :avro
-        AvroProducer.produce
-      when :binary
-        BinaryProducer.produce
+    def produce(records, value_schema: nil, key_schema: nil)
+      if value_schema.nil?
+        produce_binary(Array(records))
       else
-        raise InvalidContentType
+        produce_avro(Array(records), value_schema, key_schema)
       end
     end
 
-    VALID_TYPES = [:avro, :binary].freeze
-    private_constant :VALID_TYPES
+    def produce_binary(records)
+      body = { records: records.map(&:binary) }
+      response = client.request(:post, path, body: body, content_type: BINARY_CONTENT_TYPE)
+
+      response['offsets'].each_with_index do |offset, index|
+        record = records[index]
+
+        record.topic = topic
+        if offset['error'].nil?
+          record.offset    = offset['offset']
+          record.partition = topic.partition(offset['partition'])
+        else
+          record.error      = offset['error']
+          record.error_code = offset['error_code']
+        end
+      end
+
+      records
+    end
+
+    def produce_avro(records, value_schema, key_schema)
+      raise NotImplementedError
+    end
+
+    BINARY_CONTENT_TYPE = "application/vnd.kafka.binary.v1+json".freeze
+    AVRO_CONTENT_TYPE   = "application/vnd.kafka.avro.v1+json".freeze
   end
 end
