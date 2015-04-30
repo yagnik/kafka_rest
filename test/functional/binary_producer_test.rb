@@ -20,7 +20,7 @@ class FunctionalBinaryProducerTest < MiniTest::Test
     assert_equal 'testing 133', records[0].value
     assert_equal 3, records[0].partition.id
     assert_equal 'test.4', records[0].topic.name
-    assert records[0].offset > 0
+    assert records[0].offset >= 0
   end
 
   def test_produce_batch_with_random_partitioning
