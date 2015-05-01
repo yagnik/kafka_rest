@@ -44,6 +44,10 @@ module KafkaRest
       result
     end
 
+    def brokers
+      request(:get, '/brokers')['brokers']
+    end
+
     def request(method, path, body: nil, content_type: nil)
       Net::HTTP.start(endpoint.host, endpoint.port, use_ssl: endpoint.scheme == 'https'.freeze) do |http|
         request_class = case method
