@@ -22,6 +22,9 @@ class FunctionalMetadataTest < Minitest::Test
     leading_replica = partition.replicas.detect { |r| r.leader }
     assert_equal partition.leader, leading_replica.broker
 
+    brokers = @client.brokers
+    assert partition.replicas.all? { |r| brokers.include?(r.broker) }
+
     assert_equal partition, topic.partitions[0]
   end
 end
