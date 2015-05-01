@@ -43,5 +43,11 @@ module KafkaRest
       return false unless other.is_a?(KafkaRest::Partition)
       topic == other.topic && other.id == id
     end
+
+    alias_method :eql?, :==
+
+    def hash
+      [topic, id].hash
+    end
   end
 end

@@ -18,7 +18,7 @@ after_script:
 - make confluent/stop
 
 before_cache:
-- rm -rf confluent/logs
+- rm -rf confluent/logs/*
 
 cache:
   directories:
