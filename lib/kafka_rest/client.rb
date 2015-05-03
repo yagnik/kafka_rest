@@ -15,11 +15,10 @@ module KafkaRest
     end
 
     def topics
-      result = {}
-      request(:get, '/topics').each do |topic|
+      request(:get, '/topics').inject({}) do |result, topic|
         result[topic] = KafkaRest::Topic.new(self, topic)
+        result
       end
-      result
     end
 
     def brokers

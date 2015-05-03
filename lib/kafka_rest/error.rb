@@ -1,6 +1,8 @@
 module KafkaRest
   Error = Class.new(StandardError)
   InvalidContentType = Class.new(Error)
+  InvalidResponse = Class.new(Error)
+  UnauthorizedRequest = Class.new(Error)
 
   class ResponseError < Error
     attr_reader :code
