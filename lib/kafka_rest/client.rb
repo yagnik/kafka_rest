@@ -2,28 +2,6 @@ require 'net/http'
 require 'json'
 
 module KafkaRest
-  class ResponseError < Error
-    attr_reader :code
-
-    def initialize(code, message)
-      @code = code
-      super("#{message} (error code #{code})")
-    end
-  end
-
-  InvalidResponse = Class.new(KafkaRest::Error)
-
-  RESPONSE_ERROR_CODES = {
-    40401 => (SubjectNotFound           = Class.new(KafkaRest::ResponseError)),
-    40402 => (VersionNotFound           = Class.new(KafkaRest::ResponseError)),
-    40403 => (SchemaNotFound            = Class.new(KafkaRest::ResponseError)),
-    42201 => (InvalidAvroSchema         = Class.new(KafkaRest::ResponseError)),
-    42202 => (InvalidVersion            = Class.new(KafkaRest::ResponseError)),
-    42203 => (InvalidCompatibilityLevel = Class.new(KafkaRest::ResponseError)),
-    409   => (IncompatibleAvroSchema    = Class.new(KafkaRest::ResponseError)),
-    403   => (UnauthorizedRequest       = Class.new(KafkaRest::ResponseError)),
-  }
-
   class Client
     attr_reader :endpoint, :username, :password
 
