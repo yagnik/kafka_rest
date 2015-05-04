@@ -23,6 +23,14 @@ module KafkaRest
       self
     end
 
+    def ==(other)
+      return false unless other.is_a?(KafkaRest::Topic)
+      client == other.client && other.name == name
+    end
+
+    alias_method :eql?, :==
+
+    private
     def partition(id)
       KafkaRest::Partition.new(client, self, id)
     end
@@ -31,18 +39,9 @@ module KafkaRest
       "/topics/#{name}"
     end
 
-    def ==(other)
-      return false unless other.is_a?(KafkaRest::Topic)
-      client == other.client && other.name == name
-    end
-
-    alias_method :eql?, :==
-
     def hash
       [client, topic.name].hash
     end
-
-    private
 
     def sync
       response = client.request(:get, path)
