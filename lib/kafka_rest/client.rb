@@ -37,10 +37,10 @@ module KafkaRest
 
         request = request_class.new(path)
         request.basic_auth(username, password) if username && password
-        request['Accept'.freeze] = content_type.accept
+        request['Accept'.freeze] = (content_type && content_type.accept) || KafkaRest::ContentType.accept
 
         if body
-          request['Content-Type'.freeze] = content_type.format
+          request['Content-Type'.freeze] = (content_type && content_type.format) || KafkaRest::ContentType.format
           request.body = JSON.dump(body)
         end
 

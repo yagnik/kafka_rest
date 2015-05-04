@@ -4,6 +4,16 @@ module KafkaRest
     VALID_API_VERSIONS = [1].freeze
     VALID_SERIALIZATION_FORMATS = %i(json).freeze
 
+    class << self
+      def format
+        self.new.format
+      end
+
+      def accept
+        self.new.accept
+      end
+    end
+
     attr_reader :embedded_format, :api_version, :serialization_format
 
     def initialize(embedded_format=:binary, api_version=1, serialization_format=:json)
