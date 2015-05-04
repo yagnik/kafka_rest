@@ -9,7 +9,7 @@ module KafkaRest
       @key, @value, @offset = key, value, offset
     end
 
-    def binary
+    def as_json_with_embedded_binary
       json = { value: Base64.strict_encode64(value) }
       json[:key]       = Base64.strict_encode64(key) unless key.nil?
       json[:partition] = partition unless partition.nil?

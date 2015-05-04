@@ -30,13 +30,13 @@ module KafkaRest
     end
 
     def populate_from_json(json_object)
-      @leader   = json_object['leader']
-      @replicas = json_object['replicas'].map { |r| Replica.new(r['broker'], r['leader'], r['in_sync']) }
+      @leader   = json_object.fetch(:leader)
+      @replicas = json_object.fetch(:replicas).map { |r| Replica.new(r.fetch(:broker), r.fetch(:leader), r.fetch(:in_sync)) }
       self
     end
 
     def self.from_json(client, topic, json_object)
-      new(client, topic, json_object['partition']).populate_from_json(json_object)
+      new(client, topic, json_object.fetch(:partition)).populate_from_json(json_object)
     end
 
     def ==(other)
