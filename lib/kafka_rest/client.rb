@@ -37,10 +37,10 @@ module KafkaRest
 
         request = request_class.new(path)
         request.basic_auth(username, password) if username && password
-        request['Accept'.freeze] = DEFAULT_ACCEPT_HEADER
+        request['Accept'.freeze] = content_type.accept
 
         if body
-          request['Content-Type'.freeze] = content_type || DEFAULT_CONTENT_TYPE
+          request['Content-Type'.freeze] = content_type.format
           request.body = JSON.dump(body)
         end
 
@@ -68,9 +68,5 @@ module KafkaRest
         end
       end
     end
-
-    DEFAULT_ACCEPT_HEADER = "application/vnd.kafka.v1+json".freeze
-    DEFAULT_CONTENT_TYPE_HEADER = "application/json".freeze
-    private_constant :DEFAULT_CONTENT_TYPE_HEADER, :DEFAULT_ACCEPT_HEADER
   end
 end

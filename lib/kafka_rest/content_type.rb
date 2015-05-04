@@ -15,7 +15,11 @@ module KafkaRest
     end
 
     def format
-      "application/vnd.kafka.#{embedded_format}.#{api_version}+#{serialization_format}"
+      "application/vnd.kafka.#{embedded_format}.v#{api_version}+#{serialization_format}"
+    end
+
+    def accept
+      "application/vnd.kafka.v1+json".freeze
     end
 
     private

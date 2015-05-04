@@ -10,7 +10,7 @@ module KafkaRest
 
     def produce_binary(records)
       body = { records: records.map(&:binary) }
-      response = client.request(:post, path, body: body, content_type: BINARY_CONTENT_TYPE)
+      response = client.request(:post, path, body: body, content_type: KafkaRest::ContentType.new)
 
       response['offsets'].each_with_index do |offset, index|
         record = records[index]
@@ -31,8 +31,5 @@ module KafkaRest
     def produce_avro(records, value_schema, key_schema)
       raise NotImplementedError
     end
-
-    BINARY_CONTENT_TYPE = "application/vnd.kafka.binary.v1+json".freeze
-    AVRO_CONTENT_TYPE   = "application/vnd.kafka.avro.v1+json".freeze
   end
 end
