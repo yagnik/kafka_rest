@@ -49,7 +49,7 @@ module KafkaRest
           begin
             JSON.parse(response.body)
           rescue JSON::ParserError => e
-            raise KafkaRest::InvalidResponse, "Invalid JSON in response: #{e.message}"
+            raise KafkaRest::ResponseError, "Invalid JSON in response: #{e.message}"
           end
 
         when Net::HTTPForbidden
@@ -60,7 +60,7 @@ module KafkaRest
           response_data = begin
             JSON.parse(response.body)
           rescue JSON::ParserError => e
-            raise KafkaRest::InvalidResponse, "Invalid JSON in response: #{e.message}"
+            raise KafkaRest::ResponseError, "Invalid JSON in response: #{e.message}"
           end
 
           error_class = RESPONSE_ERROR_CODES[response_data['error_code']] || KafkaRest::ResponseError
