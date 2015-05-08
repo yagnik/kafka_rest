@@ -15,10 +15,10 @@ module KafkaRest
       response.fetch(:offsets).each_with_index do |offset, index|
         record = records[index]
 
-        record.topic = topic
+        record.topic = topic.name
         if offset.key?(:error)
           record.offset    = offset.fetch(:offset)
-          record.partition = topic.partition(offset.fetch(:partition))
+          record.partition = offset.fetch(:partition)
         else
           record.error      = offset.fetch(:error)
           record.error_code = offset.fetch(:error_code)
