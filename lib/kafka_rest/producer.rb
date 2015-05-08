@@ -10,7 +10,7 @@ module KafkaRest
 
     def produce_binary(records)
       body = { records: records.map(&:binary) }
-      response = client.request(:post, path, body: body, content_type: KafkaRest::ContentType.new)
+      response = client.request(:post, path, body: body, content_type: KafkaRest::Client::BINARY_CONTENT_TYPE)
 
       response['offsets'].each_with_index do |offset, index|
         record = records[index]
