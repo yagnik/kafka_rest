@@ -9,19 +9,19 @@ module KafkaRest
     end
 
     def produce_binary(records)
-      body = { records: records.map(&:binary) }
+      body = { records: records.map(&:as_json_with_embedded_binary) }
       response = client.request(:post, path, body: body, content_type: KafkaRest::Client::BINARY_CONTENT_TYPE)
 
-      response['offsets'].each_with_index do |offset, index|
+      response.fetch(:offsets).each_with_index do |offset, index|
         record = records[index]
 
-        record.topic = topic
-        if offset['error'].nil?
-          record.offset    = offset['offset']
-          record.partition = topic.partition(offset['partition'])
+        record.topic = topic.name
+        if offset.key?(:error)
+          record.offset    = offset.fetch(:offset)
+          record.partition = offset.fetch(:partition)
         else
-          record.error      = offset['error']
-          record.error_code = offset['error_code']
+          record.error      = offset.fetch(:error)
+          record.error_code = offset.fetch(:error_code)
         end
       end
 

@@ -46,8 +46,8 @@ module KafkaRest
 
     def sync
       response = client.request(:get, path)
-      @configs    = response['configs']
-      @partitions = response['partitions'].map do |partition|
+      @configs    = response.fetch(:configs)
+      @partitions = response.fetch(:partitions).map do |partition|
         KafkaRest::Partition.from_json(client, self, partition)
       end
     end

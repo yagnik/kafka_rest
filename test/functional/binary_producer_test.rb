@@ -10,7 +10,7 @@ class FunctionalBinaryProducerTest < MiniTest::Test
     records = @client.topic("test.1").produce(KafkaRest::Record.new(value: 'testing 133'))
     assert_equal 1, records.length
     assert_equal 'testing 133', records[0].value
-    assert_equal 0, records[0].partition.id
+    assert_equal 0, records[0].partition
     assert_equal 'test.1', records[0].topic.name
   end
 
@@ -18,7 +18,7 @@ class FunctionalBinaryProducerTest < MiniTest::Test
     records = @client.topic("test.4").partition(3).produce(KafkaRest::Record.new(value: 'testing 133'))
     assert_equal 1, records.length
     assert_equal 'testing 133', records[0].value
-    assert_equal 3, records[0].partition.id
+    assert_equal 3, records[0].partition
     assert_equal 'test.4', records[0].topic.name
     assert records[0].offset >= 0
   end

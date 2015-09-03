@@ -25,6 +25,7 @@ module KafkaRest
   }
 end
 
+require 'kafka_rest/consumer'
 require 'kafka_rest/client'
 require 'kafka_rest/producer'
 require 'kafka_rest/topic'
